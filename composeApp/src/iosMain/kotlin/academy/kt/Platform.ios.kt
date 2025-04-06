@@ -1,5 +1,6 @@
 package academy.kt
 
+import academy.kt.ui.Platform
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {

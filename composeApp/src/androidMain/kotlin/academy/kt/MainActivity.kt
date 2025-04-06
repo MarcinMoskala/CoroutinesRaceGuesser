@@ -1,5 +1,6 @@
 package academy.kt
 
+import academy.kt.ui.GuesserScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            App()
+            GuesserScreen()
         }
     }
 }
@@ -19,5 +20,5 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    App()
+    GuesserScreen()
 }

@@ -1,9 +1,12 @@
-package academy.kt.ui.samples.guesser.domain
+package academy.kt.domain
+
+import coroutines.CoroutinesRacesDifficulty
 
 sealed interface GameState
 data object Start : GameState
 data class Playing(
     val level: Level,
+    val difficulty: CoroutinesRacesDifficulty,
     val questionNumber: Int,
     val livesUsed: Int,
     val livesLeft: Int,
@@ -12,15 +15,14 @@ data class GameOver(val score: Level) : GameState
 
 class Level(val value: Int) {
     operator fun plus(i: Int) = Level(value + i)
-    val fruitsNum get() = minOf(3 + value / 4, 14)
-    val stepsNum get() = minOf(1 + (value + 2) / 4, 8)
 }
 
-fun start(): GameState = Playing(
-    level = Level(1),
+fun start(difficulty: CoroutinesRacesDifficulty): GameState = Playing(
+    level = Level(5),
     questionNumber = 1,
     livesUsed = 0,
     livesLeft = 3,
+    difficulty = difficulty,
 )
 
 fun onAnswerGiven(state: Playing, answerCorrect: Boolean): GameState {
@@ -33,5 +35,6 @@ fun onAnswerGiven(state: Playing, answerCorrect: Boolean): GameState {
         livesUsed = livesUsed,
         livesLeft = livesLeft,
         questionNumber = state.questionNumber + 1,
+        difficulty = state.difficulty,
     )
 }

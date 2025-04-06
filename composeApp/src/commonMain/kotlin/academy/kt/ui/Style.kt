@@ -1,4 +1,4 @@
-package academy.kt.ui.samples.guesser
+package academy.kt.ui
 
 import androidx.compose.ui.unit.sp
 

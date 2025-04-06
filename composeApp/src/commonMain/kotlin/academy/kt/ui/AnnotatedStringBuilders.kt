@@ -1,4 +1,4 @@
-package academy.kt.ui.samples.guesser.domain
+package academy.kt.ui
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString

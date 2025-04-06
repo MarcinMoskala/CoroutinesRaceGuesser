@@ -24,8 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import academy.kt.ui.samples.guesser.fontSizeMedium
-import functional.simpleName
+import academy.kt.ui.fontSizeMedium
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

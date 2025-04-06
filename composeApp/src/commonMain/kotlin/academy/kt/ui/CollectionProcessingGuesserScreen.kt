@@ -1,10 +1,11 @@
-package academy.kt.ui.samples.guesser.screen
+package academy.kt.ui
 
+import academy.kt.domain.Level
+import academy.kt.ui.component.ResultDisplay
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,13 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import academy.kt.ui.samples.guesser.component.Code
-import academy.kt.ui.samples.guesser.component.FruitPropertiesTable
 import academy.kt.ui.samples.guesser.component.Hearts
-import academy.kt.ui.samples.guesser.domain.Level
-import academy.kt.ui.samples.guesser.fontSizeMedium
-import com.marcinmoskala.cpg.component.ResultChooser
-import functional.CollectionProcessingChallenge
-import functional.generateCollectionProcessingChallenge
+import academy.kt.ui.samples.guesser.component.ResultSelector
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import coroutines.CoroutinesRaceChallenge
+import coroutines.CoroutinesRacesDifficulty
+import coroutines.generateChallenge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -35,18 +36,19 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun GameScreen(
     questionNumber: Int,
     level: Level,
+    difficulty: CoroutinesRacesDifficulty,
     livesUsed: Int,
     livesLeft: Int,
     onAnswer: (Boolean) -> Unit = {},
 ) {
     val (game, setGame) = remember(questionNumber) {
-        mutableStateOf<CollectionProcessingChallenge?>(
+        mutableStateOf<CoroutinesRaceChallenge?>(
             null
         )
     }
     LaunchedEffect(questionNumber) {
         launch(Dispatchers.Default) {
-            setGame(generateCollectionProcessingChallenge(level))
+            setGame(generateChallenge(level.value, difficulty))
         }
     }
     if (game == null) {
@@ -66,13 +68,14 @@ fun GameScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun GameScreen(
-    challenge: CollectionProcessingChallenge,
+    challenge: CoroutinesRaceChallenge,
     questionNumber: Int,
     level: Level,
     livesUsed: Int,
     livesLeft: Int,
     onAnswer: (Boolean) -> Unit = {},
 ) {
+    var answerGiven by remember { mutableStateOf(listOf<String>()) }
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -91,29 +94,20 @@ fun GameScreen(
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }
-        FlowRow(
-            horizontalArrangement = Arrangement.Center,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(10.dp),
         ) {
-            if (challenge.fruitsUsed.isNotEmpty() && challenge.fruitPropertiesUsed.isNotEmpty()) {
-                FruitPropertiesTable(
-                    challenge.fruitsUsed,
-                    challenge.fruitPropertiesUsed
-                )
-            }
-            Box(
-                modifier = Modifier.align(Alignment.CenterVertically)
-            ) {
-                Code(challenge.toDisplayString())
-            }
+            Code(challenge.code)
+            Text("What is the result of this code?")
+            ResultDisplay(
+                answerGiven = answerGiven,
+                onRemove = { i, _ -> answerGiven = answerGiven.toMutableList().apply { removeAt(i) } },
+            )
         }
-        ResultChooser(
-            questionNumber = questionNumber,
-            fruits = challenge.fruitsUsed,
-            result = challenge.result,
-            resultType = challenge.resultType,
-            onAnswer = onAnswer,
+        ResultSelector(
+            possibleAnswers = challenge.possibleAnswers,
+            onChosen = { answerGiven += it },
             modifier = Modifier.padding(bottom = 30.dp)
         )
     }

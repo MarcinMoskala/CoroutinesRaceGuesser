@@ -1,5 +1,6 @@
-package academy.kt.ui.samples.guesser.screen
+package academy.kt.ui
 
+import academy.kt.domain.Level
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,10 +21,6 @@ import androidx.compose.ui.text.withStyle
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import academy.kt.ui.samples.guesser.domain.Level
-import academy.kt.ui.samples.guesser.fontSizeBig
-import academy.kt.ui.samples.guesser.fontSizeMedium
-import academy.kt.ui.samples.guesser.fontSizeSmall
 
 @Preview
 @Composable
