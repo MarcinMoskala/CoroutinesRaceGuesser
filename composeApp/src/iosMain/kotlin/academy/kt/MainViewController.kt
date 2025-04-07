@@ -1,6 +1,6 @@
 package academy.kt
 
-import academy.kt.ui.GuesserScreen
+import academy.kt.ui.GuesserApp
 import androidx.compose.ui.window.ComposeUIViewController
 
-fun MainViewController() = ComposeUIViewController { GuesserScreen() }
+fun MainViewController() = ComposeUIViewController { GuesserApp() }

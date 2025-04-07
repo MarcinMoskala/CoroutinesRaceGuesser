@@ -15,7 +15,7 @@ fun Code(
     code: String,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.padding(20.dp)) {
+    Column(modifier = modifier.padding(16.dp)) {
         Text(code, fontSize = fontSizeMedium,
             fontFamily = FontFamily.Monospace)
     }

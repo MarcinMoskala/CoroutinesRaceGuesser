@@ -24,7 +24,7 @@ class CoroutinesRaceChallenge(private val challengeStatement: ChallengeStatement
     val code = challengeStatement.toCode()
     val sequentialResult = challengeStatement.getSequentialResult()
     val possibleAnswers = run  {
-        (List(5) { "($it sec)" } + challengeStatement.valuesUsed() + sequentialResult)
+        (List(3) { "(${it + 1} sec)" } + challengeStatement.valuesUsed() + sequentialResult)
             .toSet()
             .sorted()
     }
@@ -886,7 +886,7 @@ fun ChallengeStatement.getSequentialResult(): List<String> = getResult()
     .flatMapIndexed { i, (elem, next) ->
         buildList {
             if (i == 0 && elem.time != 0L) {
-                add("(${elem.time} sec)")
+                add("(${elem.time / 1000} sec)")
             }
             add(elem.value)
             if (elem.time != next.time) {

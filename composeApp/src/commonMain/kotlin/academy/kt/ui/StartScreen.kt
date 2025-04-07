@@ -1,5 +1,6 @@
 package academy.kt.ui
 
+import academy.kt.domain.GameScreenState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,15 +10,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coroutines.CoroutinesRacesDifficulty
+import coroutines.generateChallenge
+import kotlinx.coroutines.launch
 
 @Preview
 @Composable
-fun StartScreen(onStart: () -> Unit = {}) {
+fun StartScreen(state: GameScreenState.Start, startGame: (CoroutinesRacesDifficulty) -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -27,13 +32,13 @@ fun StartScreen(onStart: () -> Unit = {}) {
             modifier = Modifier.align(Alignment.Center)
         ) {
             Text(
-                "So you think you understand collection processing? Let's check it out!",
+                "So you think you understand how coroutines work? Let's check it out!",
                 textAlign = TextAlign.Center,
                 fontSize = fontSizeMedium,
                 modifier = Modifier.padding(20.dp),
             )
             Button(
-                onClick = { onStart() },
+                onClick = { startGame(CoroutinesRacesDifficulty.Simple) },
                 modifier = Modifier.padding(4.dp)
             ) {
                 Text(

@@ -1,6 +1,6 @@
 package academy.kt.ui
 
-import academy.kt.domain.Level
+import academy.kt.domain.GameScreenState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,8 +25,7 @@ import androidx.compose.ui.unit.sp
 @Preview
 @Composable
 fun GameOverScreen(
-    level: Level = Level(10),
-    onPlayAgain: () -> Unit = {},
+    state: GameScreenState.GameOver,
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -40,17 +39,17 @@ fun GameOverScreen(
             modifier = Modifier.padding(20.dp),
         )
         Text(
-            "You reached level ${level.value}.",
+            "You reached level ${state.numberOfStatements}.",
             textAlign = TextAlign.Center,
             fontSize = fontSizeMedium,
             modifier = Modifier.padding(20.dp),
         )
-        Button(onPlayAgain) {
-            Text(
-                "Play again",
-                fontSize = fontSizeMedium,
-            )
-        }
+//        Button(onPlayAgain) {
+//            Text(
+//                "Play again",
+//                fontSize = fontSizeMedium,
+//            )
+//        }
         Text(
             buildAnnotatedString {
                 val hyperlinkStyle = SpanStyle(

@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.dp
 fun ResultSelector(
     possibleAnswers: List<String>,
     onChosen: (String) -> Unit,
+    onDone: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -60,6 +63,28 @@ fun ResultSelector(
                         fontSize = fontSizeMedium,
                     )
                 }
+            }
+            Button(
+                onClick = { onDone() },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Green,
+                    contentColor = Color.White
+                ),
+                modifier = Modifier.padding(5.dp)
+                    .focusable()
+                    .onKeyEvent {
+                        val isEnter = it.key == Key.Enter
+                        if (isEnter) {
+                            onDone()
+                        }
+                        isEnter
+                    },
+            ) {
+                Text(
+                    "(done)",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = fontSizeMedium,
+                )
             }
         }
     }
