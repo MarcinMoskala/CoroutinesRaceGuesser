@@ -1,5 +1,6 @@
 package academy.kt.ui.samples.guesser.component
 
+import academy.kt.ui.fontSizeMedium
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -24,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import academy.kt.ui.fontSizeMedium
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

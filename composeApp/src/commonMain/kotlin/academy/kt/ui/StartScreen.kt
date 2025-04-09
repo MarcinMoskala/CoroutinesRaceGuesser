@@ -1,5 +1,7 @@
 package academy.kt.ui
 
+import academy.kt.domain.CoroutinesRacesDifficulty
+import academy.kt.domain.GameMode
 import academy.kt.domain.GameScreenState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,21 +10,18 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coroutines.CoroutinesRacesDifficulty
-import coroutines.generateChallenge
-import kotlinx.coroutines.launch
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun StartScreen(state: GameScreenState.Start, startGame: (CoroutinesRacesDifficulty) -> Unit) {
+fun StartScreen(state: GameScreenState.Start, startGame: (GameMode) -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -34,20 +33,37 @@ fun StartScreen(state: GameScreenState.Start, startGame: (CoroutinesRacesDifficu
             Text(
                 "So you think you understand how coroutines work? Let's check it out!",
                 textAlign = TextAlign.Center,
-                fontSize = fontSizeMedium,
+                style = MaterialTheme.typography.h3,
                 modifier = Modifier.padding(20.dp),
             )
-            Button(
-                onClick = { startGame(CoroutinesRacesDifficulty.Simple) },
-                modifier = Modifier.padding(4.dp)
-            ) {
-                Text(
-                    "Start",
-                    fontSize = fontSizeMedium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.defaultMinSize(100.dp)
-                )
+            Text(
+                "What kind kind of challenge do you want to face?",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(20.dp),
+            )
+            for (difficulty in GameMode.entries) {
+                Button(
+                    onClick = { startGame(difficulty) },
+                    modifier = Modifier.padding(4.dp)
+                ) {
+                    Text(
+                        difficulty.displayName,
+                        style = MaterialTheme.typography.body1,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.defaultMinSize(100.dp)
+                    )
+                }
             }
         }
+    }
+}
+
+private fun CoroutinesRacesDifficulty.toDisplayString(): String {
+    return when (this) {
+        CoroutinesRacesDifficulty.Simple -> "Just basic coroutine starters"
+        CoroutinesRacesDifficulty.WithSynchronization -> "With synchronization"
+        CoroutinesRacesDifficulty.WithExceptions -> "With exceptions"
+        CoroutinesRacesDifficulty.WithSynchronizationAndExceptions -> "With synchronization and exceptions"
     }
 }

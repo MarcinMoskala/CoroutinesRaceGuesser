@@ -18,14 +18,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
 fun GameOverScreen(
     state: GameScreenState.GameOver,
+    onPlayAgain: () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -39,17 +40,17 @@ fun GameOverScreen(
             modifier = Modifier.padding(20.dp),
         )
         Text(
-            "You reached level ${state.numberOfStatements}.",
+            "You reached level ${state.level} on \"${state.mode.displayName}\" mode.",
             textAlign = TextAlign.Center,
             fontSize = fontSizeMedium,
             modifier = Modifier.padding(20.dp),
         )
-//        Button(onPlayAgain) {
-//            Text(
-//                "Play again",
-//                fontSize = fontSizeMedium,
-//            )
-//        }
+        Button(onPlayAgain) {
+            Text(
+                "Play again",
+                fontSize = fontSizeMedium,
+            )
+        }
         Text(
             buildAnnotatedString {
                 val hyperlinkStyle = SpanStyle(

@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ResultSelector(
-    possibleAnswers: List<String>,
+    blocksToSelectFrom: List<String>,
+    terminalBlocksToSelectFrom: List<String>,
     onChosen: (String) -> Unit,
     onDone: () -> Unit,
     modifier: Modifier = Modifier,
@@ -44,7 +45,7 @@ fun ResultSelector(
             horizontalArrangement = Arrangement.Center,
             modifier = modifier
         ) {
-            possibleAnswers.forEach { option ->
+            blocksToSelectFrom.forEach { option ->
                 Button(
                     onClick = { onChosen(option) },
                     modifier = Modifier.padding(5.dp)
@@ -64,27 +65,33 @@ fun ResultSelector(
                     )
                 }
             }
-            Button(
-                onClick = { onDone() },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Green,
-                    contentColor = Color.White
-                ),
-                modifier = Modifier.padding(5.dp)
-                    .focusable()
-                    .onKeyEvent {
-                        val isEnter = it.key == Key.Enter
-                        if (isEnter) {
-                            onDone()
-                        }
-                        isEnter
+            terminalBlocksToSelectFrom.forEach { option ->
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.Green,
+                        contentColor = Color.White
+                    ),
+                    onClick = {
+                        onChosen(option)
+                        onDone()
                     },
-            ) {
-                Text(
-                    "(done)",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = fontSizeMedium,
-                )
+                    modifier = Modifier.padding(5.dp)
+                        .focusable()
+                        .onKeyEvent {
+                            val isEnter = it.key == Key.Enter
+                            if (isEnter) {
+                                onChosen(option)
+                                onDone()
+                            }
+                            isEnter
+                        },
+                ) {
+                    Text(
+                        option,
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = fontSizeMedium,
+                    )
+                }
             }
         }
     }

@@ -1,13 +1,14 @@
 package academy.kt.ui.samples.guesser.component
 
+import academy.kt.ui.fontSizeMedium
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import academy.kt.ui.fontSizeMedium
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -16,7 +17,8 @@ fun Code(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.padding(16.dp)) {
-        Text(code, fontSize = fontSizeMedium,
+        Text(code,
+            style = MaterialTheme.typography.body1,
             fontFamily = FontFamily.Monospace)
     }
 }

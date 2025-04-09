@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,7 +37,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
             Hearts(used = 3 - state.livesLeft, left = state.livesLeft)
             Text(
                 text = "Level: ${state.numberOfStatements}",
-                fontSize = fontSizeMedium,
+                style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }

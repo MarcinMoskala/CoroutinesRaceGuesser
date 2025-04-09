@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coroutinesraceguesser.composeapp.generated.resources.Res
 import coroutinesraceguesser.composeapp.generated.resources.heart_empty
 import coroutinesraceguesser.composeapp.generated.resources.heart_full
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable

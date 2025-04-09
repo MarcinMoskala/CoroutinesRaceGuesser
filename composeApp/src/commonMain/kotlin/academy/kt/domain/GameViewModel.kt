@@ -3,43 +3,55 @@ package academy.kt.domain
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import coroutines.CoroutinesRaceChallenge
-import coroutines.CoroutinesRacesDifficulty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlin.to
 
 class GameScreenViewModel(
     private val challengeRepository: ChallengeRepository,
 ) {
+    private val checkAnswerUseCase = CheckAnswerUseCase()
     var uiState by mutableStateOf<GameScreenState>(GameScreenState.Start)
         private set
 
     val viewModelScope = CoroutineScope(SupervisorJob())
 
-    fun startGame(difficulty: CoroutinesRacesDifficulty) {
+    fun startGame(mode: GameMode) {
         toNextChallenge(
-            difficulty = difficulty,
-            numberOfStatements = 5,
+            mode = mode,
+            level = 1,
             livesLeft = 3,
         )
     }
 
+    fun startAgain() {
+        uiState = GameScreenState.Start
+    }
+
     private fun toNextChallenge(
-        difficulty: CoroutinesRacesDifficulty,
-        numberOfStatements: Int,
+        mode: GameMode,
+        level: Int,
         livesLeft: Int
     ) {
         viewModelScope.launch {
+            val difficulty = difficultyByMode(mode, level)
+            val numberOfStatements = numberOfStatementsByMode(mode, level)
             uiState = GameScreenState.Loading
             val challenge = challengeRepository.getChallenge(numberOfStatements, difficulty)
             uiState = GameScreenState.SelectAnswer(
                 difficulty = difficulty,
                 livesLeft = livesLeft,
                 numberOfStatements = numberOfStatements,
+                mode = mode,
+                level = level,
                 code = challenge.code,
                 selectedBlocks = emptyList(),
-                blocksToSelectFrom = challenge.possibleAnswers,
+                blocksToSelectFrom = challenge.possibleAnswers - TERMINAL_BLOCKS,
+                terminalBlocksToSelectFrom = TERMINAL_BLOCKS_TO_CONSIDER[difficulty]?.toSet()
+                    .orEmpty()
+                    .plus(challenge.possibleAnswers.filter { it in TERMINAL_BLOCKS })
+                    .toList(),
                 removeBlockAt = { index ->
                     val state = uiState as GameScreenState.SelectAnswer
                     uiState = state.copy(
@@ -61,6 +73,28 @@ class GameScreenViewModel(
         }
     }
 
+    private fun difficultyByMode(mode: GameMode, level: Int) = when (mode) {
+        GameMode.Adventure -> when (level) {
+            in 1..3 -> CoroutinesRacesDifficulty.Simple
+            in 4..6 -> CoroutinesRacesDifficulty.WithSynchronization
+            in 7..9 -> CoroutinesRacesDifficulty.WithExceptions
+            else -> CoroutinesRacesDifficulty.WithSynchronizationAndExceptions
+        }
+
+        GameMode.Simple -> CoroutinesRacesDifficulty.Simple
+        GameMode.WithSynchronization -> CoroutinesRacesDifficulty.WithSynchronization
+        GameMode.WithExceptions -> CoroutinesRacesDifficulty.WithExceptions
+        GameMode.SurvivalMode -> CoroutinesRacesDifficulty.WithSynchronizationAndExceptions
+    }
+
+    private fun numberOfStatementsByMode(mode: GameMode, level: Int) = when (mode) {
+        GameMode.Adventure -> 5 + level
+        GameMode.Simple -> 5 + level
+        GameMode.WithSynchronization -> 8 + level
+        GameMode.WithExceptions -> 8 + level
+        GameMode.SurvivalMode -> 10 + level * 2
+    }
+
     private fun showAnswer(
         state: GameScreenState.SelectAnswer,
         challenge: CoroutinesRaceChallenge
@@ -68,11 +102,16 @@ class GameScreenViewModel(
         uiState = GameScreenState.Answer(
             difficulty = state.difficulty,
             livesLeft = state.livesLeft,
+            mode = state.mode,
+            level = state.level,
             numberOfStatements = state.numberOfStatements,
             code = state.code,
             selectedBlocks = state.selectedBlocks,
             correctBlocks = challenge.sequentialResult,
-            isAnswerCorrect = state.selectedBlocks == challenge.sequentialResult,
+            isAnswerCorrect = checkAnswerUseCase.isCorrectAnswer(
+                state.selectedBlocks,
+                challenge.sequentialResult
+            ),
             onNext = { onNext(uiState as GameScreenState.Answer) }
         )
     }
@@ -81,25 +120,46 @@ class GameScreenViewModel(
         when {
             state.isAnswerCorrect -> {
                 toNextChallenge(
-                    difficulty = state.difficulty,
-                    numberOfStatements = state.numberOfStatements + 1,
+                    mode = state.mode,
+                    level = state.level + 1,
                     livesLeft = state.livesLeft
                 )
             }
-            state.livesLeft == 0 -> {
+
+            state.livesLeft <= 1 -> {
                 uiState = GameScreenState.GameOver(
-                    numberOfStatements = state.numberOfStatements
+                    mode = state.mode,
+                    level = state.level
                 )
             }
+
             else -> {
                 toNextChallenge(
-                    difficulty = state.difficulty,
-                    numberOfStatements = state.numberOfStatements,
+                    mode = state.mode,
+                    level = state.level,
                     livesLeft = state.livesLeft - 1
                 )
             }
         }
+    }
 
+    companion object {
+        val TERMINAL_BLOCKS = listOf(
+            "(done)",
+            "(exception)",
+            "(cancellation exception)",
+            "(waiting forever)"
+        )
+        val TERMINAL_BLOCKS_TO_CONSIDER = mapOf(
+            CoroutinesRacesDifficulty.Simple to listOf("(done)"),
+            CoroutinesRacesDifficulty.WithExceptions to listOf(
+                "(done)",
+                "(exception)",
+                "(cancellation exception)"
+            ),
+            CoroutinesRacesDifficulty.WithSynchronization to listOf("(done)", "(waiting forever)"),
+            CoroutinesRacesDifficulty.WithSynchronizationAndExceptions to TERMINAL_BLOCKS,
+        )
     }
 }
 
@@ -111,10 +171,13 @@ sealed class GameScreenState {
     data class SelectAnswer(
         val difficulty: CoroutinesRacesDifficulty,
         val livesLeft: Int,
+        val mode: GameMode,
+        val level: Int,
         val numberOfStatements: Int,
         val code: String,
         val selectedBlocks: List<String>,
         val blocksToSelectFrom: List<String>,
+        val terminalBlocksToSelectFrom: List<String>,
         val removeBlockAt: (Int) -> Unit,
         val addBlock: (String) -> Unit,
         val giveAnswer: () -> Unit,
@@ -123,6 +186,8 @@ sealed class GameScreenState {
     data class Answer(
         val difficulty: CoroutinesRacesDifficulty,
         val livesLeft: Int,
+        val mode: GameMode,
+        val level: Int,
         val numberOfStatements: Int,
         val code: String,
         val selectedBlocks: List<String>,
@@ -132,6 +197,15 @@ sealed class GameScreenState {
     ) : GameScreenState()
 
     data class GameOver(
-        val numberOfStatements: Int,
+        val mode: GameMode,
+        val level: Int,
     ) : GameScreenState()
+}
+
+enum class GameMode(val displayName: String) {
+    Adventure("Adventure"),
+    Simple("Simple"),
+    WithSynchronization("With Synchronization"),
+    WithExceptions("With Exceptions"),
+    SurvivalMode("Survival Mode"),
 }

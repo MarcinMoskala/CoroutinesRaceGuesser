@@ -15,7 +15,7 @@ fun SelectAnswerScreenPreview() {
             difficulty = coroutines.CoroutinesRacesDifficulty.Simple,
             code = """
                 coroutineScope {
-                    val value1 = async {
+                    val value1 = aetsync {
                         launch {
                             delay(1000)
                             println("C")
