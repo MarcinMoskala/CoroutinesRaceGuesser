@@ -21,7 +21,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun StartScreen(state: GameScreenState.Start, startGame: (GameMode) -> Unit) {
+fun StartScreen(state: GameScreenState.Start) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -44,7 +44,7 @@ fun StartScreen(state: GameScreenState.Start, startGame: (GameMode) -> Unit) {
             )
             for (difficulty in GameMode.entries) {
                 Button(
-                    onClick = { startGame(difficulty) },
+                    onClick = { state.startGame(difficulty) },
                     modifier = Modifier.padding(4.dp)
                 ) {
                     Text(

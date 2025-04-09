@@ -12,12 +12,12 @@ class GameScreenViewModel(
     private val challengeRepository: ChallengeRepository,
 ) {
     private val checkAnswerUseCase = CheckAnswerUseCase()
-    var uiState by mutableStateOf<GameScreenState>(GameScreenState.Start)
+    var uiState by mutableStateOf<GameScreenState>(GameScreenState.Start(::startGame))
         private set
 
     val viewModelScope = CoroutineScope(SupervisorJob())
 
-    fun startGame(mode: GameMode) {
+    private fun startGame(mode: GameMode) {
         toNextChallenge(
             mode = mode,
             level = 1,
@@ -25,16 +25,30 @@ class GameScreenViewModel(
         )
     }
 
-    fun startAgain() {
-        uiState = GameScreenState.Start
-    }
-
     private fun toNextChallenge(
         mode: GameMode,
         level: Int,
-        livesLeft: Int
+        livesLeft: Int,
+        storyShown: Boolean = false,
     ) {
         viewModelScope.launch {
+            if (mode == GameMode.Story && !storyShown) {
+                val storyDialog = getStoryDialog(level)
+                if (storyDialog != null) {
+                    uiState = GameScreenState.GameStoryDialog(
+                        texts = storyDialog,
+                        onNext = {
+                            toNextChallenge(
+                                mode = mode,
+                                level = level,
+                                livesLeft = livesLeft,
+                                storyShown = true
+                            )
+                        }
+                    )
+                    return@launch
+                }
+            }
             val difficulty = difficultyByMode(mode, level)
             val numberOfStatements = numberOfStatementsByMode(mode, level)
             uiState = GameScreenState.Loading
@@ -74,7 +88,7 @@ class GameScreenViewModel(
     }
 
     private fun difficultyByMode(mode: GameMode, level: Int) = when (mode) {
-        GameMode.Adventure -> when (level) {
+        GameMode.Story -> when (level) {
             in 1..3 -> CoroutinesRacesDifficulty.Simple
             in 4..6 -> CoroutinesRacesDifficulty.WithSynchronization
             in 7..9 -> CoroutinesRacesDifficulty.WithExceptions
@@ -88,11 +102,22 @@ class GameScreenViewModel(
     }
 
     private fun numberOfStatementsByMode(mode: GameMode, level: Int) = when (mode) {
-        GameMode.Adventure -> 5 + level
+        GameMode.Story -> if(level < 10) 5 + level else level * 2 - 5
         GameMode.Simple -> 5 + level
         GameMode.WithSynchronization -> 8 + level
         GameMode.WithExceptions -> 8 + level
         GameMode.SurvivalMode -> 10 + level * 2
+    }
+
+    private fun getStoryDialog(nextLevel: Int): List<String>? = when (nextLevel) {
+        1 -> listOf(
+            "So you are the new pretender to become a master of Kotlin Coroutines?",
+            "Let's see how you do with basic structures..."
+        )
+        4 -> listOf("Not bed, but it is time to add some synchronization mechanisms...")
+        7 -> listOf("Nice, let's see if exceptions are also your thing...")
+        10 -> listOf("I am impressed, but let's see if you can handle everything at once, with a bit more statements...")
+        else -> null
     }
 
     private fun showAnswer(
@@ -129,7 +154,10 @@ class GameScreenViewModel(
             state.livesLeft <= 1 -> {
                 uiState = GameScreenState.GameOver(
                     mode = state.mode,
-                    level = state.level
+                    level = state.level,
+                    startAgain = {
+                        uiState = GameScreenState.Start(::startGame)
+                    },
                 )
             }
 
@@ -166,7 +194,14 @@ class GameScreenViewModel(
 sealed class GameScreenState {
     object Loading : GameScreenState()
 
-    object Start : GameScreenState()
+    data class Start(
+        val startGame: (GameMode) -> Unit
+    ) : GameScreenState()
+
+    data class GameStoryDialog(
+        val texts: List<String>,
+        val onNext: () -> Unit,
+    ) : GameScreenState()
 
     data class SelectAnswer(
         val difficulty: CoroutinesRacesDifficulty,
@@ -199,13 +234,14 @@ sealed class GameScreenState {
     data class GameOver(
         val mode: GameMode,
         val level: Int,
+        val startAgain: () -> Unit,
     ) : GameScreenState()
 }
 
 enum class GameMode(val displayName: String) {
-    Adventure("Adventure"),
+    Story("Adventure"),
     Simple("Simple"),
-    WithSynchronization("With Synchronization"),
-    WithExceptions("With Exceptions"),
-    SurvivalMode("Survival Mode"),
+    WithSynchronization("Medium with Synchronization"),
+    WithExceptions("Medium with Exceptions"),
+    SurvivalMode("Expert!"),
 }

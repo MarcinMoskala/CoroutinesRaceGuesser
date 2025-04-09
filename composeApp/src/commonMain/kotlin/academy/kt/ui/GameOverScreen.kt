@@ -26,7 +26,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun GameOverScreen(
     state: GameScreenState.GameOver,
-    onPlayAgain: () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -45,7 +44,7 @@ fun GameOverScreen(
             fontSize = fontSizeMedium,
             modifier = Modifier.padding(20.dp),
         )
-        Button(onPlayAgain) {
+        Button(state.startAgain) {
             Text(
                 "Play again",
                 fontSize = fontSizeMedium,
