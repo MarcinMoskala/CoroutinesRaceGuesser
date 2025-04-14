@@ -1,6 +1,9 @@
 package academy.kt.ui.samples.guesser.component
 
+import academy.kt.ui.blueColor
+import academy.kt.ui.component.GameButton
 import academy.kt.ui.fontSizeMedium
+import academy.kt.ui.orangeColor
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Center
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -46,52 +50,21 @@ fun ResultSelector(
             modifier = modifier
         ) {
             blocksToSelectFrom.forEach { option ->
-                Button(
+                GameButton(
+                    text = option,
                     onClick = { onChosen(option) },
-                    modifier = Modifier.padding(5.dp)
-                        .focusable()
-                        .onKeyEvent {
-                            val isEnter = it.key == Key.Enter
-                            if (isEnter) {
-                                onChosen(option)
-                            }
-                            isEnter
-                        },
-                ) {
-                    Text(
-                        option,
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = fontSizeMedium,
-                    )
-                }
+                    color = blueColor,
+                )
             }
             terminalBlocksToSelectFrom.forEach { option ->
-                Button(
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color.Green,
-                        contentColor = Color.White
-                    ),
+                GameButton(
+                    text = option,
                     onClick = {
                         onChosen(option)
                         onDone()
                     },
-                    modifier = Modifier.padding(5.dp)
-                        .focusable()
-                        .onKeyEvent {
-                            val isEnter = it.key == Key.Enter
-                            if (isEnter) {
-                                onChosen(option)
-                                onDone()
-                            }
-                            isEnter
-                        },
-                ) {
-                    Text(
-                        option,
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = fontSizeMedium,
-                    )
-                }
+                    color = orangeColor,
+                )
             }
         }
     }

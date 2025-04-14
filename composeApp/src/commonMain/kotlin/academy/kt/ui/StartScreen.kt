@@ -33,7 +33,7 @@ fun StartScreen(state: GameScreenState.Start) {
             Text(
                 "So you think you understand how coroutines work? Let's check it out!",
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.h3,
+                style = MaterialTheme.typography.h4,
                 modifier = Modifier.padding(20.dp),
             )
             Text(
@@ -52,6 +52,7 @@ fun StartScreen(state: GameScreenState.Start) {
                         style = MaterialTheme.typography.body1,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.defaultMinSize(100.dp)
+                            .padding(4.dp)
                     )
                 }
             }

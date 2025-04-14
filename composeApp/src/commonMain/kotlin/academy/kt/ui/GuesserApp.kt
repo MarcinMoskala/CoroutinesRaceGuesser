@@ -14,12 +14,14 @@ fun GuesserApp() {
     val challengeRepository = remember { ChallengeRepository() }
     val vm = remember { GameScreenViewModel(challengeRepository) }
     val state = vm.uiState
-    when (state) {
-        is GameScreenState.Start ->StartScreen(state)
-        GameScreenState.Loading -> Loading()
-        is GameScreenState.GameStoryDialog -> GameStoryDialogScreen(state)
-        is GameScreenState.SelectAnswer -> SelectAnswerScreen(state)
-        is GameScreenState.Answer -> AnswerScreen(state)
-        is GameScreenState.GameOver -> GameOverScreen(state)
+    GameDesign {
+        when (state) {
+            is GameScreenState.Start -> StartScreen(state)
+            GameScreenState.Loading -> Loading()
+            is GameScreenState.GameStoryDialog -> GameStoryDialogScreen(state)
+            is GameScreenState.SelectAnswer -> SelectAnswerScreen(state)
+            is GameScreenState.Answer -> AnswerScreen(state)
+            is GameScreenState.GameOver -> GameOverScreen(state)
+        }
     }
 }
