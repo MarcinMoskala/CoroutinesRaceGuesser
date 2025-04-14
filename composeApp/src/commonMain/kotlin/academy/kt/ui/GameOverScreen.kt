@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
@@ -39,7 +41,13 @@ fun GameOverScreen(
             modifier = Modifier.padding(20.dp),
         )
         Text(
-            "You reached level ${state.level} on \"${state.mode.displayName}\" mode.",
+            buildAnnotatedString {
+                append("You reached level ${state.level} on ")
+                withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                    append(state.mode.displayName)
+                }
+                append(" mode.")
+            },
             textAlign = TextAlign.Center,
             fontSize = fontSizeMedium,
             modifier = Modifier.padding(20.dp),
@@ -69,10 +77,10 @@ fun GameOverScreen(
                         append("Compose Multiplatform")
                     }
                 }
-                append(".\n\nIf you want to improve your collection processing skills,\ncheck out ")
-                withLink(LinkAnnotation.Url(url = "https://kt.academy/book/functional_kotlin")) {
+                append(".\n\nIf you want to improve your Kotlin Coroutines skills,\ncheck out ")
+                withLink(LinkAnnotation.Url(url = "https://kt.academy/book/coroutines")) {
                     withStyle(style = hyperlinkStyle) {
-                        append("Functional Kotlin book")
+                        append("Kotlin Coroutines: Deep Dive book")
                     }
                 }
                 append(" or ")
