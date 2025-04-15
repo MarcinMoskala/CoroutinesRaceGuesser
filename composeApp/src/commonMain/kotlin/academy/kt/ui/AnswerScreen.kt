@@ -36,6 +36,8 @@ import coroutinesraceguesser.composeapp.generated.resources.heart_eyes
 import coroutinesraceguesser.composeapp.generated.resources.heart_full
 import coroutinesraceguesser.composeapp.generated.resources.star
 import coroutinesraceguesser.composeapp.generated.resources.sunglasses
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
 import org.jetbrains.compose.resources.painterResource
 import kotlin.random.Random
 
@@ -56,7 +58,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
         ) {
             Hearts(used = 3 - state.livesLeft, left = state.livesLeft)
             Text(
-                text = "Level: ${state.numberOfStatements}",
+                text = "Level: ${state.level}",
                 style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(bottom = 20.dp)
             )

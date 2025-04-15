@@ -42,7 +42,7 @@ fun SelectAnswerScreen(
         ) {
             Hearts(used = 3 - state.livesLeft, left = state.livesLeft)
             Text(
-                text = "Level: ${state.numberOfStatements}",
+                text = "Level: ${state.level}",
                 style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
