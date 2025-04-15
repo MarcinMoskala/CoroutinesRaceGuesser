@@ -13,7 +13,8 @@ class GameScreenViewModel(
     isFirstRun: Boolean,
 ) {
     private val checkAnswerUseCase = CheckAnswerUseCase()
-    var uiState by mutableStateOf<GameScreenState>(GameScreenState.Start(::startGame))
+    private val StartState = GameScreenState.Start(startGame = ::startGame)
+    var uiState by mutableStateOf<GameScreenState>(StartState)
         private set
 
     val viewModelScope = CoroutineScope(SupervisorJob())
@@ -27,6 +28,7 @@ class GameScreenViewModel(
             mode = mode,
             level = 1,
             livesLeft = 3,
+            storyShown = false
         )
     }
 
@@ -34,7 +36,7 @@ class GameScreenViewModel(
         mode: GameMode,
         level: Int,
         livesLeft: Int,
-        storyShown: Boolean = false,
+        storyShown: Boolean,
     ) {
         viewModelScope.launch {
             if (mode == GameMode.Story && !storyShown) {
@@ -152,7 +154,8 @@ class GameScreenViewModel(
                 toNextChallenge(
                     mode = state.mode,
                     level = state.level + 1,
-                    livesLeft = state.livesLeft
+                    livesLeft = state.livesLeft,
+                    storyShown = false
                 )
             }
 
@@ -161,7 +164,7 @@ class GameScreenViewModel(
                     mode = state.mode,
                     level = state.level,
                     startAgain = {
-                        uiState = GameScreenState.Start(::startGame)
+                        uiState = StartState
                     },
                 )
             }
@@ -170,13 +173,15 @@ class GameScreenViewModel(
                 toNextChallenge(
                     mode = state.mode,
                     level = state.level,
-                    livesLeft = state.livesLeft - 1
+                    livesLeft = state.livesLeft - 1,
+                    storyShown = true
                 )
             }
         }
     }
 
     companion object {
+
         val TERMINAL_BLOCKS = listOf(
             "(done)",
             "(exception)",
