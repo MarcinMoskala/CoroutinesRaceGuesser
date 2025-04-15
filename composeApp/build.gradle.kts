@@ -1,5 +1,6 @@
 import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -10,6 +11,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    id("org.jetbrains.compose.hot-reload") version "1.0.0-alpha05" // <- add this additionally
     kotlin("plugin.serialization") version "2.1.10"
 }
 
@@ -140,4 +142,8 @@ tasks.register<Copy>("updateDocs") {
     }
     from("$buildDir/dist/wasmJs/productionExecutable/")
     into("$rootDir/docs/")
+}
+
+composeCompiler {
+    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
