@@ -3,6 +3,7 @@ package academy.kt.domain
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.russhwolf.settings.Settings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
@@ -10,7 +11,7 @@ import kotlin.to
 
 class GameScreenViewModel(
     private val challengeRepository: ChallengeRepository,
-    isFirstRun: Boolean,
+    private val settings: Settings,
 ) {
     private val checkAnswerUseCase = CheckAnswerUseCase()
     private val StartState = GameScreenState.Start(startGame = ::startGame)
@@ -20,7 +21,10 @@ class GameScreenViewModel(
     val viewModelScope = CoroutineScope(SupervisorJob())
 
     init {
-        if (isFirstRun) startGame(GameMode.Story)
+        if (settings.getBoolean("first", true)) {
+            startGame(GameMode.Story)
+            settings.putBoolean("first", false)
+        }
     }
 
     private fun startGame(mode: GameMode) {
@@ -118,12 +122,12 @@ class GameScreenViewModel(
 
     private fun getStoryDialog(nextLevel: Int): List<String>? = when (nextLevel) {
         1 -> listOf(
-            "So you are the new pretender to become a master of Kotlin Coroutines?",
+            "So you are the new pretender to become a master of Kotlin Coroutines?",
             "Let's see how you do with basic structures..."
         )
         4 -> listOf("Not bed, but it is time to add some synchronization mechanisms...")
         7 -> listOf("Nice, let's see if exceptions are also your thing...")
-        10 -> listOf("I am impressed, but let's see if you can handle everything at once, with a bit more statements...")
+        10 -> listOf("I am impressed....", "Let's see if you can handle everything at once...", "...with a bit more statements...")
         else -> null
     }
 
@@ -160,13 +164,7 @@ class GameScreenViewModel(
             }
 
             state.livesLeft <= 1 -> {
-                uiState = GameScreenState.GameOver(
-                    mode = state.mode,
-                    level = state.level,
-                    startAgain = {
-                        uiState = StartState
-                    },
-                )
+                toGameOver(state)
             }
 
             else -> {
@@ -178,6 +176,26 @@ class GameScreenViewModel(
                 )
             }
         }
+    }
+
+    private fun toGameOver(state: GameScreenState.Answer) {
+        val previousHighestScore = settings.getIntOrNull("highestScore${state.mode}")
+        val isHighestScore = previousHighestScore == null || state.level > previousHighestScore
+        val highestScore = if (isHighestScore) {
+            settings.putInt("highestScore${state.mode}", state.level)
+            state.level
+        } else {
+            previousHighestScore
+        }
+        uiState = GameScreenState.GameOver(
+            mode = state.mode,
+            level = state.level,
+            startAgain = {
+                uiState = StartState
+            },
+            isHighestScore = isHighestScore,
+            highestScore = highestScore,
+        )
     }
 
     companion object {
@@ -244,6 +262,8 @@ sealed class GameScreenState {
     data class GameOver(
         val mode: GameMode,
         val level: Int,
+        val highestScore: Int?,
+        val isHighestScore: Boolean,
         val startAgain: () -> Unit,
     ) : GameScreenState()
 }

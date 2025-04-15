@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.tooling.preview.Preview
+import com.russhwolf.settings.SharedPreferencesSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
@@ -17,13 +18,10 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val preferenceSettings = SharedPreferencesSettings(getSharedPreferences("settings", MODE_PRIVATE))
 
         setContent {
-            val scope = rememberCoroutineScope()
-            AndroidUiDispatcher
-            scope.coroutineContext.fold(Unit) { acc, e -> println("Scope key ${e.key} value $e") }
-            GuesserApp()
-
+            GuesserApp(preferenceSettings)
         }
     }
 }

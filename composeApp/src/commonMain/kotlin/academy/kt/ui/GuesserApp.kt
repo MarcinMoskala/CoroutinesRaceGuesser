@@ -5,14 +5,15 @@ import academy.kt.domain.GameScreenState
 import academy.kt.domain.GameScreenViewModel
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import com.russhwolf.settings.Settings
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
 @Preview
 @Composable
-fun GuesserApp(isFirstRun: Boolean = false) {
+fun GuesserApp(settings: Settings) {
     val challengeRepository = remember { ChallengeRepository() }
-    val vm = remember { GameScreenViewModel(challengeRepository, isFirstRun) }
+    val vm = remember { GameScreenViewModel(challengeRepository, settings) }
     val state = vm.uiState
     GameDesign {
         when (state) {

@@ -76,6 +76,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ktor.client.core)
             implementation(libs.kotlinx.serialization.json)
+            implementation("com.russhwolf:multiplatform-settings:1.3.0")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

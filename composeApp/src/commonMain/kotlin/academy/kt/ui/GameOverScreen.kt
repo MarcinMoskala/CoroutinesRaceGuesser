@@ -16,6 +16,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
@@ -47,6 +48,14 @@ fun GameOverScreen(
                     append(state.mode.displayName)
                 }
                 append(" mode.")
+                appendLine()
+                if (state.isHighestScore) {
+                    withStyle(SpanStyle(fontWeight = Bold)) {
+                        append("This is your highest score on this mode! 🎉")
+                    }
+                } else {
+                    append("Your highest score on this mode is ${state.highestScore}.")
+                }
             },
             textAlign = TextAlign.Center,
             fontSize = fontSizeMedium,
