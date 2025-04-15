@@ -36,7 +36,7 @@ class GameScreenViewModel(
                 val storyDialog = getStoryDialog(level)
                 if (storyDialog != null) {
                     uiState = GameScreenState.GameStoryDialog(
-                        texts = storyDialog,
+                        dialogs = storyDialog,
                         onNext = {
                             toNextChallenge(
                                 mode = mode,
@@ -199,7 +199,7 @@ sealed class GameScreenState {
     ) : GameScreenState()
 
     data class GameStoryDialog(
-        val texts: List<String>,
+        val dialogs: List<String>,
         val onNext: () -> Unit,
     ) : GameScreenState()
 

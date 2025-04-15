@@ -10,6 +10,8 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coroutinesraceguesser.composeapp.generated.resources.Res
 import coroutinesraceguesser.composeapp.generated.resources.customer_service
@@ -36,6 +39,7 @@ import coroutinesraceguesser.composeapp.generated.resources.sunglasses
 import org.jetbrains.compose.resources.painterResource
 import kotlin.random.Random
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AnswerScreen(state: GameScreenState.Answer) {
     Column(
@@ -61,19 +65,13 @@ fun AnswerScreen(state: GameScreenState.Answer) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Code(state.code)
-            if (state.isAnswerCorrect) {
-                Image(
-                    painter = painterResource(remember { imageResources.random() }),
-                    contentDescription = "Success image",
-                    modifier = Modifier.size(200.dp)
-                )
-            }
-            Row {
+            FlowRow(
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Code(state.code)
                 Column(
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(16.dp)
                 ) {
-                    Text("Correct answer:")
                     ResultDisplay(
                         answerGiven = state.correctBlocks,
                         onRemove = { i, _ -> },
@@ -81,7 +79,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
                 }
                 if (!state.isAnswerCorrect) {
                     Column(
-                        modifier = Modifier.padding(8.dp)
+                        modifier = Modifier.padding(16.dp)
                     ) {
                         Text("Your answer:")
                         ResultDisplay(
@@ -89,6 +87,23 @@ fun AnswerScreen(state: GameScreenState.Answer) {
                             onRemove = { i, _ -> },
                         )
                     }
+                }
+            }
+            if (state.isAnswerCorrect) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Image(
+                        painter = painterResource(remember { imageResources.random() }),
+                        contentDescription = "Success image",
+                        modifier = Modifier.size(200.dp)
+                    )
+                    Text("Correct!",
+                        color = orangeColor,
+                        style = MaterialTheme.typography.h3,
+                        modifier = Modifier.padding(8.dp)
+                    )
                 }
             }
         }

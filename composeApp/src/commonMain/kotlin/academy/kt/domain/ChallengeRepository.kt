@@ -14,6 +14,7 @@ class ChallengeRepository {
         client.get("https://api.kt.academy/game/coroutines/$expectedStatements/$difficulty")
             .bodyAsText()
             .let { Json.decodeFromString<CoroutinesRaceChallenge>(it) }
+            .let { it.copy(code = "suspend fun main() = " + it.code) }
 }
 
 @Serializable

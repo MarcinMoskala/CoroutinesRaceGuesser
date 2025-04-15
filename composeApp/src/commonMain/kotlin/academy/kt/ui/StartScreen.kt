@@ -31,7 +31,7 @@ fun StartScreen(state: GameScreenState.Start) {
             modifier = Modifier.align(Alignment.Center)
         ) {
             Text(
-                "So you think you understand how coroutines work? Let's check it out!",
+                "So you think you understand Kotlin Coroutines? Let's check it out!",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.h4,
                 modifier = Modifier.padding(20.dp),
@@ -42,18 +42,24 @@ fun StartScreen(state: GameScreenState.Start) {
                 style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(20.dp),
             )
-            for (difficulty in GameMode.entries) {
-                Button(
-                    onClick = { state.startGame(difficulty) },
-                    modifier = Modifier.padding(4.dp)
-                ) {
-                    Text(
-                        difficulty.displayName,
-                        style = MaterialTheme.typography.body1,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.defaultMinSize(100.dp)
-                            .padding(4.dp)
-                    )
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(12.dp),
+            ) {
+                for (difficulty in GameMode.entries) {
+                    Button(
+                        onClick = { state.startGame(difficulty) },
+                        modifier = Modifier.padding(8.dp)
+                    ) {
+                        Text(
+                            difficulty.displayName,
+                            style = MaterialTheme.typography.body1,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.defaultMinSize(100.dp)
+                                .padding(8.dp)
+                        )
+                    }
                 }
             }
         }

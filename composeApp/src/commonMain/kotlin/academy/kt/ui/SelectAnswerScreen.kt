@@ -10,6 +10,8 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -45,15 +47,18 @@ fun SelectAnswerScreen(
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Code(state.code)
-            Text(
-                "What is the result of this code?",
-                style = MaterialTheme.typography.body1,
-            )
+        FlowRow {
+            Column(
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Code(state.code)
+                Text(
+                    "What is the result of this code?",
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
             ResultDisplay(
                 answerGiven = state.selectedBlocks,
                 onRemove = { i, _ -> state.removeBlockAt(i) },
