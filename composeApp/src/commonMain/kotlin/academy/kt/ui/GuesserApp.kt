@@ -10,9 +10,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun GuesserApp() {
+fun GuesserApp(isFirstRun: Boolean = false) {
     val challengeRepository = remember { ChallengeRepository() }
-    val vm = remember { GameScreenViewModel(challengeRepository) }
+    val vm = remember { GameScreenViewModel(challengeRepository, isFirstRun) }
     val state = vm.uiState
     GameDesign {
         when (state) {

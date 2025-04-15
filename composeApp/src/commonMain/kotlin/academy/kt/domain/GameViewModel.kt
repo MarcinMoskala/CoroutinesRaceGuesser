@@ -10,12 +10,17 @@ import kotlin.to
 
 class GameScreenViewModel(
     private val challengeRepository: ChallengeRepository,
+    isFirstRun: Boolean,
 ) {
     private val checkAnswerUseCase = CheckAnswerUseCase()
     var uiState by mutableStateOf<GameScreenState>(GameScreenState.Start(::startGame))
         private set
 
     val viewModelScope = CoroutineScope(SupervisorJob())
+
+    init {
+        if (isFirstRun) startGame(GameMode.Story)
+    }
 
     private fun startGame(mode: GameMode) {
         toNextChallenge(

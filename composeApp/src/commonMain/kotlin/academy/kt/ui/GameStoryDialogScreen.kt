@@ -90,6 +90,7 @@ fun GamePlot(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxHeight()
+                .align(Alignment.Center)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
