@@ -3,12 +3,16 @@ package academy.kt.ui
 import academy.kt.domain.CoroutinesRacesDifficulty
 import academy.kt.domain.GameMode
 import academy.kt.domain.GameScreenState
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -29,6 +33,7 @@ fun StartScreen(state: GameScreenState.Start) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.align(Alignment.Center)
+                .verticalScroll(rememberScrollState())
         ) {
             Text(
                 "So you think you understand Kotlin Coroutines? Let's check it out!",
@@ -63,14 +68,5 @@ fun StartScreen(state: GameScreenState.Start) {
                 }
             }
         }
-    }
-}
-
-private fun CoroutinesRacesDifficulty.toDisplayString(): String {
-    return when (this) {
-        CoroutinesRacesDifficulty.Simple -> "Just basic coroutine starters"
-        CoroutinesRacesDifficulty.WithSynchronization -> "With synchronization"
-        CoroutinesRacesDifficulty.WithExceptions -> "With exceptions"
-        CoroutinesRacesDifficulty.WithSynchronizationAndExceptions -> "With synchronization and exceptions"
     }
 }

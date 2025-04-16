@@ -74,7 +74,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
             FlowRow(
                 verticalArrangement = Arrangement.Center,
             ) {
-                Code(state.code)
+                Code(state.code, selectable = true)
                 if (state.isAnswerCorrect) {
                     Column(
                         modifier = Modifier.padding(16.dp)
