@@ -10,21 +10,16 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,19 +28,11 @@ import coroutinesraceguesser.composeapp.generated.resources.Res
 import coroutinesraceguesser.composeapp.generated.resources.customer_service
 import coroutinesraceguesser.composeapp.generated.resources.happy
 import coroutinesraceguesser.composeapp.generated.resources.happy_face
-import coroutinesraceguesser.composeapp.generated.resources.heart_empty
 import coroutinesraceguesser.composeapp.generated.resources.heart_eyes
-import coroutinesraceguesser.composeapp.generated.resources.heart_full
 import coroutinesraceguesser.composeapp.generated.resources.star
 import coroutinesraceguesser.composeapp.generated.resources.sunglasses
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
-import kotlin.random.Random
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AnswerScreen(state: GameScreenState.Answer) {
     Column(
@@ -63,7 +50,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
             Hearts(used = 3 - state.livesLeft, left = state.livesLeft)
             Text(
                 text = "Level: ${state.level}",
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }
@@ -91,7 +78,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
                         Text(
                             "Incorrect",
                             color = Color.Red,
-                            style = MaterialTheme.typography.h3,
+                            style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.padding(8.dp)
                         )
                         ResultDisplay(
@@ -104,7 +91,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
                     ) {
                         Text(
                             "Correct answer:",
-                            style = MaterialTheme.typography.h3,
+                            style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.padding(8.dp)
                         )
                         ResultDisplay(
@@ -127,7 +114,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
                     Text(
                         "Correct!",
                         color = orangeColor,
-                        style = MaterialTheme.typography.h3,
+                        style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.padding(8.dp)
                     )
                 }

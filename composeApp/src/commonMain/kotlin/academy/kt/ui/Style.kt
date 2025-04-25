@@ -1,7 +1,7 @@
 package academy.kt.ui
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
@@ -19,18 +19,17 @@ fun GameDesign(
 ) {
     MaterialTheme(
         typography = MaterialTheme.typography.copy(
-            body1 = MaterialTheme.typography.body1.copy(
+            bodyMedium = MaterialTheme.typography.bodyMedium.copy(
                 fontSize = fontSizeMedium,
+
             ),
-            h3 = MaterialTheme.typography.h3.copy(
+            titleMedium = MaterialTheme.typography.titleMedium.copy(
                 fontSize = fontSizeBig,
             ),
         ),
-        colors = lightColors(
+        colorScheme = lightColorScheme(
             primary = blueColor,
-            primaryVariant = blueColor,
             secondary = orangeColor,
-            secondaryVariant = orangeColor,
             background = Color.White,
             surface = Color.White,
             error = Color(0xffb00020),

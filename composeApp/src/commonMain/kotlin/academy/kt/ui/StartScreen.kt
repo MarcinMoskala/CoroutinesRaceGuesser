@@ -13,9 +13,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@Preview
 @Composable
 fun StartScreen(state: GameScreenState.Start) {
     Box(
@@ -38,13 +37,13 @@ fun StartScreen(state: GameScreenState.Start) {
             Text(
                 "So you think you understand Kotlin Coroutines? Let's check it out!",
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.h4,
+                style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(20.dp),
             )
             Text(
                 "What kind kind of challenge do you want to face?",
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(20.dp),
             )
             Column(
@@ -59,7 +58,7 @@ fun StartScreen(state: GameScreenState.Start) {
                     ) {
                         Text(
                             difficulty.displayName,
-                            style = MaterialTheme.typography.body1,
+                            style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.defaultMinSize(100.dp)
                                 .padding(8.dp)

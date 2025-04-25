@@ -26,10 +26,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -113,6 +113,7 @@ fun GamePlot(
             }
             PlayButton(
                 onPlay = onPlay,
+//                modifier = Modifier.padding(16.dp)
             )
         }
     }
@@ -126,12 +127,12 @@ private fun TextDialog(
     Text(
         text = text,
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.h4,
+        style = MaterialTheme.typography.bodyMedium,
         color = Color.White,
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
             .background(blueColor)
-            .padding(24.dp)
+            .padding(16.dp)
     )
 }
 
@@ -143,18 +144,19 @@ private fun PlayButton(
     Button(
         onPlay,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = orangeColor,
+            containerColor = orangeColor,
             contentColor = Color.White
         ),
         shape = RoundedCornerShape(20.dp),
-        elevation = ButtonDefaults.elevation(8.dp),
+        elevation = ButtonDefaults.buttonElevation(8.dp),
+        modifier = modifier,
     ) {
         Text(
             text = "Continue",
             color = Color.White,
-            style = MaterialTheme.typography.h4,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
-                .padding(16.dp)
+                .padding(8.dp)
         )
     }
 }

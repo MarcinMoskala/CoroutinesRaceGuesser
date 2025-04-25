@@ -4,10 +4,10 @@ import academy.kt.ui.blueColor
 import academy.kt.ui.fontSizeMedium
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults.buttonColors
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
@@ -27,14 +27,14 @@ fun ResultDisplay(
                 onClick = { onRemove(i, answer) },
                 modifier = Modifier.padding(5.dp),
                 colors = buttonColors(
-                    backgroundColor = blueColor,
-                    contentColor = MaterialTheme.colors.onPrimary
+                    containerColor = blueColor,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
             ) {
                 Text(
                     answer,
                     fontFamily = FontFamily.Monospace,
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
         }

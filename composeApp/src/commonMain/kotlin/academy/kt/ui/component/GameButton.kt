@@ -3,10 +3,10 @@ package academy.kt.ui.component
 import academy.kt.ui.blueColor
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +25,7 @@ fun GameButton(
 ) {
     Button(
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = color,
+            containerColor = color,
             contentColor = textColor,
         ),
         onClick = onClick,
@@ -42,7 +42,7 @@ fun GameButton(
     ) {
         Text(
             text,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }
