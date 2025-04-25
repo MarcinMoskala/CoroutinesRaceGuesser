@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 fun StartScreenPreview() {
     StartScreen(
         GameScreenState.Start(
-            startGame = {}
+            startGame = {},
         )
     )
 }
