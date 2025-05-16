@@ -1,6 +1,6 @@
 package academy.kt.ui.samples.guesser.component
 
-import academy.kt.ui.fontSizeMedium
+import academy.kt.ui.orangeColor
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -25,28 +25,22 @@ fun Code(
     modifier: Modifier = Modifier,
     selectable: Boolean = false,
 ) {
+    val onBackground = MaterialTheme.colorScheme.onBackground
     val codeAnnotated = remember(code) {
-        val simple = SpanStyle(Color(0xFF000000))
+        val simple = SpanStyle(onBackground)
         val value = SpanStyle(Color(0xFF4A86E8))
-        val keyword = SpanStyle(Color(0xFF000080))
-        val punctuation = SpanStyle(Color(0xFFA1A1A1))
+        val keyword = SpanStyle(orangeColor)
+        val string = SpanStyle(Color(0xFF6aab73))
 //        val annotation = SpanStyle(Color(0xFFBBB529))
 //        val comment = SpanStyle(Color(0xFF808080))
         buildAnnotatedString {
             withStyle(simple) {
                 append(code)
-                addStyle(punctuation, code, ":")
-                addStyle(punctuation, code, "=")
-                addStyle(punctuation, code, "\"")
-                addStyle(punctuation, code, "[")
-                addStyle(punctuation, code, "]")
-                addStyle(punctuation, code, "{")
-                addStyle(punctuation, code, "}")
-                addStyle(punctuation, code, "(")
-                addStyle(punctuation, code, ")")
-                addStyle(punctuation, code, ",")
+                addStyle(keyword, code, "suspend ")
                 addStyle(keyword, code, "fun ")
                 addStyle(keyword, code, "val ")
+                addStyle(keyword, code, "true")
+                addStyle(keyword, code, "false")
 //            addStyle(keyword, code, "var ")
 //            addStyle(keyword, code, "private ")
 //            addStyle(keyword, code, "internal ")
@@ -58,7 +52,7 @@ fun Code(
                 addStyle(value, code, "true")
                 addStyle(value, code, "false")
 //                addStyle(value, code, Regex("[0-9]+"))
-//                addStyle(annotation, code, Regex("^@[a-zA-Z_]*"))
+                addStyle(string, code, Regex("\"[a-zA-Z_]*\""))
 //                addStyle(comment, code, Regex("^\\s*//.*"))
 
                 // Keeps copied lines separated and fixes crash during selection:
@@ -71,10 +65,10 @@ fun Code(
         SelectionContainer(enabled = selectable) {
             Text(
                 codeAnnotated,
+                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodyMedium,
                 fontFamily = FontFamily.Monospace,
-
-                )
+            )
         }
     }
 }

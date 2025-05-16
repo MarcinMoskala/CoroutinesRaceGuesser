@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,9 +40,10 @@ fun GameOverScreen(
             .verticalScroll(rememberScrollState())
     ) {
         Text(
-            "Game over! ",
+            "Game over!",
             textAlign = TextAlign.Center,
-            fontSize = fontSizeBig,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.padding(20.dp),
         )
         Text(
@@ -61,19 +63,21 @@ fun GameOverScreen(
                 }
             },
             textAlign = TextAlign.Center,
-            fontSize = fontSizeMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(20.dp),
         )
-        Button(state.startAgain) {
+        Button(state.startAgain, modifier = Modifier.padding(16.dp)) {
             Text(
                 "Play again",
-                fontSize = fontSizeMedium,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
         }
         Text(
             buildAnnotatedString {
                 val hyperlinkStyle = SpanStyle(
-                    color = Color(0xff64B5F6),
+                    color = MaterialTheme.colorScheme.secondary,
                     fontSize = 16.sp,
                     textDecoration = TextDecoration.Underline
                 )
@@ -104,7 +108,8 @@ fun GameOverScreen(
                 append(".")
             },
             textAlign = TextAlign.Center,
-            fontSize = fontSizeSmall,
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(20.dp),
         )
     }

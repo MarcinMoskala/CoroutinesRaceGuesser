@@ -1,7 +1,5 @@
 package academy.kt.ui.component
 
-import academy.kt.ui.blueColor
-import academy.kt.ui.fontSizeMedium
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -27,7 +25,7 @@ fun ResultDisplay(
                 onClick = { onRemove(i, answer) },
                 modifier = Modifier.padding(5.dp),
                 colors = buttonColors(
-                    containerColor = blueColor,
+                    containerColor = MaterialTheme.colorScheme.secondary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
             ) {

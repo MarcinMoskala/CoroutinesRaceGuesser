@@ -43,6 +43,7 @@ fun SelectAnswerScreen(
             Hearts(used = 3 - state.livesLeft, left = state.livesLeft)
             Text(
                 text = "Level: ${state.level}",
+                color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
@@ -52,9 +53,13 @@ fun SelectAnswerScreen(
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center,
             ) {
-                Code(state.code)
+                Code(
+                    state.code,
+                    modifier = Modifier.padding(16.dp)
+                )
                 Text(
                     "What is the result of this code?",
+                    color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(16.dp)
                 )

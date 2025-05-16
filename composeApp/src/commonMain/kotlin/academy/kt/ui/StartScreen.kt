@@ -3,6 +3,7 @@ package academy.kt.ui
 import academy.kt.domain.CoroutinesRacesDifficulty
 import academy.kt.domain.GameMode
 import academy.kt.domain.GameScreenState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,12 +38,14 @@ fun StartScreen(state: GameScreenState.Start) {
         ) {
             Text(
                 "So you think you understand Kotlin Coroutines? Let's check it out!",
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(20.dp),
             )
             Text(
                 "What kind kind of challenge do you want to face?",
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(20.dp),
@@ -58,6 +62,7 @@ fun StartScreen(state: GameScreenState.Start) {
                     ) {
                         Text(
                             difficulty.displayName,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.defaultMinSize(100.dp)

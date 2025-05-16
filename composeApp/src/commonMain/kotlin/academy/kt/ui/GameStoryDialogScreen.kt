@@ -126,9 +126,9 @@ private fun TextDialog(
 ) {
     Text(
         text = text,
+        color = MaterialTheme.colorScheme.onSecondary,
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.bodyMedium,
-        color = Color.White,
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
             .background(blueColor)
@@ -144,8 +144,8 @@ private fun PlayButton(
     Button(
         onPlay,
         colors = ButtonDefaults.buttonColors(
-            containerColor = orangeColor,
-            contentColor = Color.White
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
         ),
         shape = RoundedCornerShape(20.dp),
         elevation = ButtonDefaults.buttonElevation(8.dp),

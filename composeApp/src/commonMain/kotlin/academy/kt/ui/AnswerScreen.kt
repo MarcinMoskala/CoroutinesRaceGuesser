@@ -51,6 +51,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
             Text(
                 text = "Level: ${state.level}",
                 style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }
@@ -61,7 +62,10 @@ fun AnswerScreen(state: GameScreenState.Answer) {
             FlowRow(
                 verticalArrangement = Arrangement.Center,
             ) {
-                Code(state.code, selectable = true)
+                Code(
+                    state.code, selectable = true,
+                    modifier = Modifier.padding(16.dp)
+                )
                 if (state.isAnswerCorrect) {
                     Column(
                         modifier = Modifier.padding(16.dp)
@@ -91,6 +95,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
                     ) {
                         Text(
                             "Correct answer:",
+                            color = MaterialTheme.colorScheme.onBackground,
                             style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.padding(8.dp)
                         )

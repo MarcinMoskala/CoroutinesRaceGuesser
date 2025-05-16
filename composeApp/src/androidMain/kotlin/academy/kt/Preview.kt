@@ -4,6 +4,8 @@ import academy.kt.domain.CoroutinesRacesDifficulty
 import academy.kt.domain.GameMode
 import academy.kt.domain.GameScreenState
 import academy.kt.ui.AnswerScreen
+import academy.kt.ui.GameDesign
+import academy.kt.ui.GuesserApp
 import academy.kt.ui.SelectAnswerScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -12,45 +14,39 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview(device = "id:desktop_medium")
 @Composable
 private fun AnswerScreenPreview() {
-    AnswerScreen(
-        GameScreenState.Answer(
-            difficulty = CoroutinesRacesDifficulty.WithSynchronization,
-            livesLeft = 3,
-            mode = GameMode.WithSynchronization,
-            level = 1,
-            numberOfStatements = 5,
-            code = """
+    GameDesign {
+        AnswerScreen(
+            GameScreenState.Answer(
+                difficulty = CoroutinesRacesDifficulty.WithSynchronization,
+                livesLeft = 3,
+                mode = GameMode.WithSynchronization,
+                level = 1,
+                numberOfStatements = 5,
+                code = """
                 coroutineScope {
-                    val value1 = aetsync {
-                        launch {
-                            delay(1000)
-                            println("C")
-                            delay(1000)
-                        }
-                        println("H")
-                        delay(1000)
-                        println("B")
+                    val value1 = async {
                         "D"
                     }
                     println(value1.await())
                 }
             """.trimIndent(),
-            selectedBlocks = listOf(
-                "A",
-                "(1 sec)",
-                "B",
-                "(2 sec)",
-            ),
-            correctBlocks = listOf(
-                "A",
-                "(1 sec)",
-                "B",
-                "(2 sec)",
-            ),
-            isAnswerCorrect = true,
-            onNext = { /* No-op for preview */ }
+                selectedBlocks = listOf(
+                    "A",
+                    "(1 sec)",
+                    "B",
+                    "(2 sec)",
+                ),
+                correctBlocks = listOf(
+                    "A",
+                    "(1 sec)",
+                    "B",
+                    "(2 sec)",
+                ),
+                isAnswerCorrect = true,
+                onNext = { /* No-op for preview */ }
+            )
         )
-    )
+    }
 }
 
 //@Preview
