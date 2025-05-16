@@ -43,7 +43,7 @@ fun GameOverScreen(
             "Game over!",
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(20.dp),
         )
         Text(

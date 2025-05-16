@@ -37,6 +37,13 @@ fun StartScreen(state: GameScreenState.Start) {
                 .verticalScroll(rememberScrollState())
         ) {
             Text(
+                "Coroutines Guesser Game",
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(20.dp),
+            )
+            Text(
                 "So you think you understand Kotlin Coroutines? Let's check it out!",
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
