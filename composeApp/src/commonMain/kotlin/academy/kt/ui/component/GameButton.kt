@@ -43,7 +43,7 @@ fun GameButton(
         Text(
             text,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(bottom = 5.dp),
+            modifier = Modifier.padding(bottom = 2.dp),
         )
     }
 }

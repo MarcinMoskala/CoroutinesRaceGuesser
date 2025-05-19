@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -30,9 +31,10 @@ fun ResultSelector(
     ) {
         Text(
             "Choose what will happen next from those options:",
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(16.dp)
         )
         FlowRow(
             verticalArrangement = Arrangement.Center,

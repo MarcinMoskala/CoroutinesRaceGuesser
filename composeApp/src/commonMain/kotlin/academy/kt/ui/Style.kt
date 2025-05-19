@@ -33,10 +33,12 @@ fun GameDesign(
             titleLarge = MaterialTheme.typography.titleLarge.copy(
                 fontFamily = fontHeader,
                 fontSize = 60.sp,
+                lineHeight = 64.sp
             ),
             titleMedium = MaterialTheme.typography.titleMedium.copy(
                 fontFamily = fontHeader,
                 fontSize = 42.sp,
+                lineHeight = 46.sp
             ),
             bodyMedium = MaterialTheme.typography.bodyMedium.copy(
                 fontFamily = fontBody,
@@ -46,6 +48,7 @@ fun GameDesign(
             bodySmall = MaterialTheme.typography.bodyMedium.copy(
                 fontFamily = fontBody,
                 fontSize = 16.sp,
+                lineHeight = 20.sp
             ),
         ),
         colorScheme = lightColorScheme(
