@@ -94,15 +94,15 @@ fun GameOverScreen(
                     }
                 }
                 append(".\n\nIf you want to improve your Kotlin Coroutines skills,\ncheck out ")
-                withLink(LinkAnnotation.Url(url = "https://kt.academy/book/coroutines")) {
+                withLink(LinkAnnotation.Url(url = "https://coroutinesmastery.com")) {
                     withStyle(style = hyperlinkStyle) {
-                        append("Kotlin Coroutines: Deep Dive book")
+                        append("Coroutines Mastery course")
                     }
                 }
                 append(" or ")
-                withLink(LinkAnnotation.Url(url = "https://kt.academy/#workshops-offer")) {
+                withLink(LinkAnnotation.Url(url = "https://kt.academy/book/coroutines")) {
                     withStyle(style = hyperlinkStyle) {
-                        append("my workshops")
+                        append("Kotlin Coroutines: Deep Dive book.")
                     }
                 }
                 append(".")
