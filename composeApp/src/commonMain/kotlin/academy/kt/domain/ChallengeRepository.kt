@@ -11,7 +11,7 @@ class ChallengeRepository {
     private val client = HttpClient()
 
     suspend fun getChallenge(expectedStatements: Int, difficulty: CoroutinesRacesDifficulty): CoroutinesRaceChallenge =
-        client.get("https://api.kt.academy/game/coroutines/$expectedStatements/$difficulty")
+        client.get("https://web-production-b6cc0.up.railway.app/game/coroutines/$expectedStatements/$difficulty")
             .bodyAsText()
             .let { Json.decodeFromString<CoroutinesRaceChallenge>(it) }
             .let { it.copy(code = "suspend fun main() = " + it.code) }
