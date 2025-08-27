@@ -48,6 +48,7 @@ import coroutinesraceguesser.composeapp.generated.resources.Res
 import coroutinesraceguesser.composeapp.generated.resources.wizard_marcin
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun GameStoryDialogScreen(state: GameStoryDialog) {
@@ -159,4 +160,17 @@ private fun PlayButton(
                 .padding(8.dp)
         )
     }
+}
+
+@Preview
+@Composable
+fun GameStoryDialogScreenPreview() {
+    GameStoryDialogScreen(
+        dialogs = listOf(
+            "Welcome to the game!",
+            "You will face many challenges.",
+            "Are you ready to start?",
+        ),
+        onNext = {}
+    )
 }

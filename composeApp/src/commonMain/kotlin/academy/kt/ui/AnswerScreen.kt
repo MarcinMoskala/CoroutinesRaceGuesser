@@ -1,5 +1,7 @@
 package academy.kt.ui
 
+import academy.kt.domain.CoroutinesRacesDifficulty
+import academy.kt.domain.GameMode
 import academy.kt.domain.GameScreenState
 import academy.kt.ui.component.GameButton
 import academy.kt.ui.component.ResultDisplay
@@ -32,6 +34,7 @@ import coroutinesraceguesser.composeapp.generated.resources.heart_eyes
 import coroutinesraceguesser.composeapp.generated.resources.star
 import coroutinesraceguesser.composeapp.generated.resources.sunglasses
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AnswerScreen(state: GameScreenState.Answer) {
@@ -131,6 +134,25 @@ fun AnswerScreen(state: GameScreenState.Answer) {
             modifier = Modifier.padding(20.dp),
         )
     }
+}
+
+@Composable
+@Preview
+private fun AnswerScreenPreview() {
+    AnswerScreen(
+        GameScreenState.Answer(
+            level = 1,
+            code = "1234",
+            isAnswerCorrect = true,
+            correctBlocks = listOf("1", "2", "3", "4"),
+            selectedBlocks = listOf("1", "2", "3", "4"),
+            livesLeft = 3,
+            difficulty = CoroutinesRacesDifficulty.WithExceptions,
+            mode = GameMode.WithExceptions,
+            numberOfStatements = 12,
+            onNext = {},
+        )
+    )
 }
 
 private val imageResources = listOf(

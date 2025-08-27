@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun StartScreen(state: GameScreenState.Start) {
+fun StartScreen(state: GameScreenState.Start, modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Column(
             verticalArrangement = Arrangement.Center,

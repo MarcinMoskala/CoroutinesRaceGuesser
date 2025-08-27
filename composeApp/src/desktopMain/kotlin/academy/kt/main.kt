@@ -17,8 +17,6 @@ fun main() {
         state = WindowState(width = 800.dp, height = 800.dp),
         alwaysOnTop = true
     ) {
-        DevelopmentEntryPoint {
-            GuesserApp(preferences)
-        }
+        GuesserApp(preferences)
     }
 }
