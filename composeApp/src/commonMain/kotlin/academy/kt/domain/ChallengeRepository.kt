@@ -14,7 +14,7 @@ class ChallengeRepository {
         client.get("https://web-production-b6cc0.up.railway.app/game/coroutines/$expectedStatements/$difficulty")
             .bodyAsText()
             .let { Json.decodeFromString<CoroutinesRaceChallenge>(it) }
-            .let { it.copy(code = "suspend fun main() = " + it.code) }
+            .let { it.copy(code = it.code) }
 }
 
 @Serializable
