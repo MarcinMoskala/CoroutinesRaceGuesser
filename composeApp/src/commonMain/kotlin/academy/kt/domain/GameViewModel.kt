@@ -36,11 +36,28 @@ class GameScreenViewModel(
         )
     }
 
+    fun startChallenge(code: String) {
+        uiState = GameScreenState.Loading
+        viewModelScope.launch {
+            val challenge = challengeRepository.decodeChallenge(code)
+            toNextChallenge(
+                mode = GameMode.ChallengeMode(
+                    difficulty = CoroutinesRacesDifficulty.valueOf(challenge.mode),
+                    levelToReach = challenge.minLevel,
+                    userId = challenge.userId
+                ),
+                level = 1,
+                livesLeft = 3,
+            )
+        }
+
+    }
+
     private fun toNextChallenge(
         mode: GameMode,
         level: Int,
         livesLeft: Int,
-        storyShown: Boolean,
+        storyShown: Boolean = false,
     ) {
         viewModelScope.launch {
             if (mode == GameMode.Story && !storyShown) {
@@ -110,14 +127,16 @@ class GameScreenViewModel(
         GameMode.WithSynchronization -> CoroutinesRacesDifficulty.WithSynchronization
         GameMode.WithExceptions -> CoroutinesRacesDifficulty.WithExceptions
         GameMode.SurvivalMode -> CoroutinesRacesDifficulty.WithSynchronizationAndExceptions
+        is GameMode.ChallengeMode -> mode.difficulty
     }
 
     private fun numberOfStatementsByMode(mode: GameMode, level: Int) = when (mode) {
         GameMode.Story -> if(level < 10) 5 + level else level * 2 - 5
         GameMode.Simple -> 5 + level
-        GameMode.WithSynchronization -> 8 + level
-        GameMode.WithExceptions -> 8 + level
+        GameMode.WithSynchronization -> 7 + level
+        GameMode.WithExceptions -> 9 + level
         GameMode.SurvivalMode -> 10 + level * 2
+        is GameMode.ChallengeMode -> 5 + level
     }
 
     private fun getStoryDialog(nextLevel: Int): List<String>? = when (nextLevel) {
@@ -135,6 +154,10 @@ class GameScreenViewModel(
         state: GameScreenState.SelectAnswer,
         challenge: CoroutinesRaceChallenge
     ) {
+        val isAnswerCorrect = checkAnswerUseCase.isCorrectAnswer(
+            state.selectedBlocks,
+            challenge.sequentialResult
+        )
         uiState = GameScreenState.Answer(
             difficulty = state.difficulty,
             livesLeft = state.livesLeft,
@@ -144,12 +167,14 @@ class GameScreenViewModel(
             code = state.code,
             selectedBlocks = state.selectedBlocks,
             correctBlocks = challenge.sequentialResult,
-            isAnswerCorrect = checkAnswerUseCase.isCorrectAnswer(
-                state.selectedBlocks,
-                challenge.sequentialResult
-            ),
+            isAnswerCorrect = isAnswerCorrect,
             onNext = { onNext(uiState as GameScreenState.Answer) }
         )
+        if (isAnswerCorrect && state.mode is GameMode.ChallengeMode) {
+            viewModelScope.launch {
+                challengeRepository.onUserReachedScore(state.mode.userId, state.mode.difficulty.toString(), state.level)
+            }
+        }
     }
 
     private fun onNext(state: GameScreenState.Answer) {
@@ -191,7 +216,15 @@ class GameScreenViewModel(
             mode = state.mode,
             level = state.level,
             startAgain = {
-                uiState = StartState
+                if (state.mode is GameMode.ChallengeMode) {
+                    toNextChallenge(
+                        mode = state.mode,
+                        level = 1,
+                        livesLeft = 3,
+                    )
+                } else {
+                    uiState = StartState
+                }
             },
             isHighestScore = isHighestScore,
             highestScore = highestScore,
@@ -268,10 +301,24 @@ sealed class GameScreenState {
     ) : GameScreenState()
 }
 
-enum class GameMode(val displayName: String) {
-    Story("Adventure"),
-    Simple("Simple"),
-    WithSynchronization("Medium with Synchronization"),
-    WithExceptions("Medium with Exceptions"),
-    SurvivalMode("Expert!"),
+sealed interface GameMode {
+    data object Story : GameMode
+    data object Simple : GameMode
+    data object WithSynchronization : GameMode
+    data object WithExceptions : GameMode
+    data object SurvivalMode : GameMode
+    data class ChallengeMode(
+        val difficulty: CoroutinesRacesDifficulty,
+        val levelToReach: Int,
+        val userId: String,
+    ): GameMode
+}
+
+val GameMode.displayName get() = when(this) {
+    is GameMode.ChallengeMode -> "challenge on level ${difficulty.name.lowercase().replaceFirstChar { it.uppercase() } }"
+    GameMode.Story -> "Story"
+    GameMode.Simple -> "Simple"
+    GameMode.WithSynchronization -> "Hard"
+    GameMode.WithExceptions -> "Very Hard"
+    GameMode.SurvivalMode -> "Extreme"
 }

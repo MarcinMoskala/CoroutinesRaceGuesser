@@ -1,6 +1,7 @@
 package academy.kt.ui
 
 import academy.kt.domain.GameScreenState
+import academy.kt.domain.displayName
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

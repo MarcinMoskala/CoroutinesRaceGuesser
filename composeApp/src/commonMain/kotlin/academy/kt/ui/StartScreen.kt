@@ -3,6 +3,7 @@ package academy.kt.ui
 import academy.kt.domain.CoroutinesRacesDifficulty
 import academy.kt.domain.GameMode
 import academy.kt.domain.GameScreenState
+import academy.kt.domain.displayName
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
@@ -62,7 +63,7 @@ fun StartScreen(state: GameScreenState.Start, modifier: Modifier = Modifier) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(12.dp),
             ) {
-                for (difficulty in GameMode.entries) {
+                for (difficulty in listOf(GameMode.Simple, GameMode.WithSynchronization, GameMode.WithExceptions, GameMode.SurvivalMode)) {
                     Button(
                         onClick = { state.startGame(difficulty) },
                         modifier = Modifier.padding(8.dp)

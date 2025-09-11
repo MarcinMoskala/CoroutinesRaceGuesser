@@ -6,6 +6,7 @@ import androidx.compose.ui.window.ComposeViewport
 import com.marcinmoskala.cpg.LoadFont
 import com.russhwolf.settings.StorageSettings
 import kotlinx.browser.document
+import kotlinx.browser.window
 import org.w3c.dom.asList
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -15,9 +16,14 @@ fun main() {
     document.body?.children?.asList()?.forEach { it.remove() }
     val settings = StorageSettings()
 
+    // Read URL params: ?challenge={code}
+    val challengeCode: String? = window.location.search
+        .takeIf { it.startsWith("?challenge=") }
+        ?.substringAfter("?challenge=")
+
     ComposeViewport(document.body!!) {
         LoadFont {
-            GuesserApp(settings)
+            GuesserApp(settings, challengeCode)
         }
     }
 }
