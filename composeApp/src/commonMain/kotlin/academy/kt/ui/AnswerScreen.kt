@@ -4,6 +4,7 @@ import academy.kt.domain.CoroutinesRacesDifficulty
 import academy.kt.domain.GameMode
 import academy.kt.domain.GameScreenState
 import academy.kt.ui.component.GameButton
+import academy.kt.ui.component.OptionalChallengeNote
 import academy.kt.ui.component.ResultDisplay
 import academy.kt.ui.samples.guesser.component.Code
 import academy.kt.ui.samples.guesser.component.Hearts
@@ -57,19 +58,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
-            if (state.mode is GameMode.ChallengeMode) {
-                val levelReached = state.level < state.mode.levelToReach
-                val text = when {
-                    levelReached -> "Reach level ${state.mode.levelToReach} to complete this challenge!"
-                    else -> "Congratulations! You have completed this challenge!"
-                }
-                Text(
-                    text = text,
-                    color = if(levelReached) Color.Green else MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(bottom = 20.dp)
-                )
-            }
+            OptionalChallengeNote(state.mode, state.level)
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
