@@ -4,6 +4,7 @@ import androidx.compose.ui.input.key.Key.Companion.Z
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -19,7 +20,7 @@ class ChallengeRepository {
             .let { Json.decodeFromString<CoroutinesRaceChallenge>(it) }
 
     suspend fun decodeChallenge(challengeCode: String): CodeChallenge =
-        client.get("$baseUrl/game/challenge/decode/$challengeCode")
+        client.get("$baseUrl/game/challenge/decode?challenge=$challengeCode")
             .bodyAsText()
             .let { Json.decodeFromString<CodeChallenge>(it) }
 
