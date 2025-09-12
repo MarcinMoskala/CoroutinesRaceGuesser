@@ -15,7 +15,7 @@ fun OptionalChallengeNote(mode: GameMode, level: Int) {
     if (mode is GameMode.ChallengeMode) {
         val levelReached = level >= mode.levelToReach
         val text = when {
-            levelReached -> "Reach level ${mode.levelToReach} to complete this challenge!"
+            !levelReached -> "Reach level ${mode.levelToReach} to complete this challenge!"
             else -> "Congratulations! You have completed this challenge!"
         }
         Text(
