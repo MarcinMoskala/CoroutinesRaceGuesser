@@ -57,6 +57,19 @@ fun AnswerScreen(state: GameScreenState.Answer) {
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
+            if (state.mode is GameMode.ChallengeMode) {
+                val levelReached = state.level < state.mode.levelToReach
+                val text = when {
+                    levelReached -> "Reach level ${state.mode.levelToReach} to complete this challenge!"
+                    else -> "Congratulations! You have completed this challenge!"
+                }
+                Text(
+                    text = text,
+                    color = if(levelReached) Color.Green else MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(bottom = 20.dp)
+                )
+            }
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

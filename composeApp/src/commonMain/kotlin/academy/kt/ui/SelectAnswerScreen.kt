@@ -1,5 +1,6 @@
 package academy.kt.ui
 
+import academy.kt.domain.GameMode
 import academy.kt.domain.GameScreenState
 import academy.kt.ui.component.ResultDisplay
 import academy.kt.ui.samples.guesser.component.Code
@@ -21,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -47,6 +49,19 @@ fun SelectAnswerScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
+            if (state.mode is GameMode.ChallengeMode) {
+                val levelReached = state.level < state.mode.levelToReach
+                val text = when {
+                    levelReached -> "Reach level ${state.mode.levelToReach} to complete this challenge!"
+                    else -> "Congratulations! You have completed this challenge!"
+                }
+                Text(
+                    text = text,
+                    color = if(levelReached) Color.Green else MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(bottom = 20.dp)
+                )
+            }
         }
         FlowRow {
             Column(
