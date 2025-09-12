@@ -19,12 +19,12 @@ class ChallengeRepository {
             .let { Json.decodeFromString<CoroutinesRaceChallenge>(it) }
 
     suspend fun decodeChallenge(challengeCode: String): CodeChallenge =
-        client.post("$baseUrl/game/decode/$challengeCode")
+        client.post("$baseUrl/game/challenge/decode/$challengeCode")
             .bodyAsText()
             .let { Json.decodeFromString<CodeChallenge>(it) }
 
     suspend fun onUserReachedScore(userId: String, mode: String, score: Int) {
-        client.post("$baseUrl/game/challenge/score/$userId/$mode/$score")
+        client.post("$baseUrl/game/challenge/score/$userId/COROUTINES/$mode/$score")
     }
 }
 
