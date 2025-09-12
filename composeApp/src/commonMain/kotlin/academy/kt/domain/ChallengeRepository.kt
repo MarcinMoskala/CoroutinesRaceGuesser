@@ -19,7 +19,7 @@ class ChallengeRepository {
             .let { Json.decodeFromString<CoroutinesRaceChallenge>(it) }
 
     suspend fun decodeChallenge(challengeCode: String): CodeChallenge =
-        client.post("$baseUrl/game/challenge/decode/$challengeCode")
+        client.get("$baseUrl/game/challenge/decode/$challengeCode")
             .bodyAsText()
             .let { Json.decodeFromString<CodeChallenge>(it) }
 
