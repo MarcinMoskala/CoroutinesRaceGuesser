@@ -21,7 +21,7 @@ fun main() {
     // Read URL params: ?user=$userId&mode=$mode&minLevel=$minLevel
     val challengeData: GameMode.ChallengeMode? = window.location.search
         .takeUnless { it.isEmpty() }
-        ?.drop(1)
+        ?.let { if(it.startsWith("?")) it.drop(1) else it }
         ?.split("&")
         ?.map { it.split("=") }
         ?.filter { it.size == 2 }
@@ -42,7 +42,7 @@ fun main() {
             }
         }
 
-    if (challengeData == null) {
+    if (challengeData == null && window.location.search.isNotEmpty() && window.location.search != "?") {
         window.location.search = ""
     }
 
