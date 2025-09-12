@@ -162,7 +162,7 @@ class GameScreenViewModel(
         )
         if (isAnswerCorrect && state.mode is GameMode.ChallengeMode) {
             viewModelScope.launch {
-                challengeRepository.onUserReachedScore(state.mode.userId, state.mode.difficulty.toString(), state.level)
+                challengeRepository.onUserReachedScore(state.mode.userId, state.mode.difficulty.toString(), state.level + 1)
             }
         }
     }

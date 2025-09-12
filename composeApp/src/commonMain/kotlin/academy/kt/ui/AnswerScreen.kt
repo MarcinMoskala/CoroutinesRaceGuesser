@@ -58,7 +58,7 @@ fun AnswerScreen(state: GameScreenState.Answer) {
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
-            OptionalChallengeNote(state.mode, state.level)
+            OptionalChallengeNote(state.mode, state.level + if(state.isAnswerCorrect) 1 else 0)
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
