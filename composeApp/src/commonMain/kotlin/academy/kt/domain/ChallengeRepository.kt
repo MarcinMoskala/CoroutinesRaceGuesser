@@ -18,12 +18,6 @@ class ChallengeRepository {
         client.get("$baseUrl/game/coroutines/$expectedStatements/$difficulty")
             .bodyAsText()
             .let { Json.decodeFromString<CoroutinesRaceChallenge>(it) }
-
-    suspend fun decodeChallenge(challengeCode: String): CodeChallenge =
-        client.get("$baseUrl/game/challenge/decode?challenge=$challengeCode")
-            .bodyAsText()
-            .let { Json.decodeFromString<CodeChallenge>(it) }
-
     suspend fun onUserReachedScore(userId: String, mode: String, score: Int) {
         client.post("$baseUrl/game/challenge/score/$userId/COROUTINES/$mode/$score")
     }

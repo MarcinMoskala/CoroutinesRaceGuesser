@@ -7,7 +7,6 @@ import com.russhwolf.settings.Settings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import kotlin.to
 
 class GameScreenViewModel(
     private val challengeRepository: ChallengeRepository,
@@ -36,21 +35,12 @@ class GameScreenViewModel(
         )
     }
 
-    fun startChallenge(code: String) {
-        uiState = GameScreenState.Loading
-        viewModelScope.launch {
-            val challenge = challengeRepository.decodeChallenge(code)
-            toNextChallenge(
-                mode = GameMode.ChallengeMode(
-                    difficulty = CoroutinesRacesDifficulty.valueOf(challenge.mode),
-                    levelToReach = challenge.minLevel,
-                    userId = challenge.userId
-                ),
-                level = 1,
-                livesLeft = 3,
-            )
-        }
-
+    fun startChallenge(challengeData: GameMode.ChallengeMode) {
+        toNextChallenge(
+            mode = challengeData,
+            level = 1,
+            livesLeft = 3,
+        )
     }
 
     private fun toNextChallenge(

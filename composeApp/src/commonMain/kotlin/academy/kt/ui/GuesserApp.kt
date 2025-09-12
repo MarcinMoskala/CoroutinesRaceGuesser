@@ -1,6 +1,7 @@
 package academy.kt.ui
 
 import academy.kt.domain.ChallengeRepository
+import academy.kt.domain.CoroutinesRacesDifficulty
 import academy.kt.domain.GameMode
 import academy.kt.domain.GameScreenState
 import academy.kt.domain.GameScreenViewModel
@@ -17,13 +18,13 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun GuesserApp(settings: Settings, challengeCode: String? = null) {
+fun GuesserApp(settings: Settings, challengeData: GameMode.ChallengeMode? = null) {
     val challengeRepository = remember { ChallengeRepository() }
     val vm = remember { GameScreenViewModel(challengeRepository, settings) }
     val state = vm.uiState
-    LaunchedEffect(challengeCode) {
-        if (challengeCode != null) {
-            vm.startChallenge(challengeCode)
+    LaunchedEffect(challengeData) {
+        if (challengeData != null) {
+            vm.startChallenge(challengeData)
         }
     }
     GameDesign {

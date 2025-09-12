@@ -1,5 +1,7 @@
 package academy.kt
 
+import academy.kt.domain.CoroutinesRacesDifficulty
+import academy.kt.domain.GameMode
 import academy.kt.ui.GuesserApp
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
@@ -16,14 +18,37 @@ fun main() {
     document.body?.children?.asList()?.forEach { it.remove() }
     val settings = StorageSettings()
 
-    // Read URL params: ?challenge={code}
-    val challengeCode: String? = window.location.search
-        .takeIf { it.startsWith("?challenge=") }
-        ?.substringAfter("?challenge=")
+    // Read URL params: ?user=$userId&mode=$mode&minLevel=$minLevel
+    val challengeData: GameMode.ChallengeMode? = window.location.search
+        .takeUnless { it.isEmpty() }
+        ?.drop(1)
+        ?.split("&")
+        ?.map { it.split("=") }
+        ?.filter { it.size == 2 }
+        ?.associate { it[0] to it[1] }
+        ?.let {
+            if (it.containsKey("user") && it.containsKey("mode") && it.containsKey("minLevel")) {
+                GameMode.ChallengeMode(
+                    userId = it["user"] ?: return@let null,
+                    difficulty = try {
+                        CoroutinesRacesDifficulty.valueOf(it["mode"]!!)
+                    } catch (e: Exception) {
+                        return@let null
+                    },
+                    levelToReach = it["minLevel"]!!.toIntOrNull() ?: return@let null
+                )
+            } else {
+                null
+            }
+        }
+
+    if (challengeData == null) {
+        window.location.search = ""
+    }
 
     ComposeViewport(document.body!!) {
         LoadFont {
-            GuesserApp(settings, challengeCode)
+            GuesserApp(settings, challengeData)
         }
     }
 }
