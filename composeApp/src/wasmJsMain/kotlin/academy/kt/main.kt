@@ -13,6 +13,7 @@ import org.w3c.dom.asList
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
+    trackEvent("app_open")
     document.getElementById("no_wasm_comment")?.remove()
     document.getElementById("spinner")?.remove()
     document.body?.children?.asList()?.forEach { it.remove() }

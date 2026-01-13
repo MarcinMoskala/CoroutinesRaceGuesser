@@ -1,5 +1,6 @@
 package academy.kt.domain
 
+import academy.kt.trackEvent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -27,6 +28,7 @@ class GameScreenViewModel(
     }
 
     private fun startGame(mode: GameMode) {
+        trackEvent("level_start", mapOf("mode" to mode.toString(), "level" to "1"))
         toNextChallenge(
             mode = mode,
             level = 1,
@@ -36,6 +38,7 @@ class GameScreenViewModel(
     }
 
     fun startChallenge(challengeData: GameMode.ChallengeMode) {
+        trackEvent("level_start", mapOf("mode" to "ChallengeMode", "level" to "1", "difficulty" to challengeData.difficulty.toString()))
         toNextChallenge(
             mode = challengeData,
             level = 1,
@@ -160,6 +163,13 @@ class GameScreenViewModel(
             isAnswerCorrect = isAnswerCorrect,
             onNext = { onNext(uiState as GameScreenState.Answer) }
         )
+        trackEvent(
+            "answer_given", mapOf(
+                "mode" to state.mode.toString(),
+                "level" to state.level.toString(),
+                "correct" to isAnswerCorrect.toString(),
+            )
+        )
         if (isAnswerCorrect && state.mode is GameMode.ChallengeMode) {
             viewModelScope.launch {
                 challengeRepository.onUserReachedScore(state.mode.userId, state.mode.difficulty.toString(), state.level + 1)
@@ -170,6 +180,7 @@ class GameScreenViewModel(
     private fun onNext(state: GameScreenState.Answer) {
         when {
             state.isAnswerCorrect -> {
+                trackEvent("level_start", mapOf("mode" to state.mode.toString(), "level" to (state.level + 1).toString()))
                 toNextChallenge(
                     mode = state.mode,
                     level = state.level + 1,
@@ -202,10 +213,17 @@ class GameScreenViewModel(
         } else {
             previousHighestScore
         }
+        trackEvent(
+            "game_over", mapOf(
+                "mode" to state.mode.toString(),
+                "level" to state.level.toString(),
+            )
+        )
         uiState = GameScreenState.GameOver(
             mode = state.mode,
             level = state.level,
             startAgain = {
+                trackEvent("level_start", mapOf("mode" to state.mode.toString(), "level" to "1"))
                 if (state.mode is GameMode.ChallengeMode) {
                     toNextChallenge(
                         mode = state.mode,
